@@ -1,0 +1,10 @@
+html,body{
+  background-color: rgb(26, 26, 26);
+  color:white;
+  overflow-y: hidden;
+}
+
+:root {
+  --card-bg-color: rgb(0 55 77);
+  --card-header-color: rgb(255, 255, 255);
+}
