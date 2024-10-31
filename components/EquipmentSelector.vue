@@ -5,7 +5,7 @@
       placeholder="選擇樓層"
       class="mr-3 custom-select"
       @change="() => {
-        selectedEquipment = undefined;
+        selectedField= selectedEquipment = undefined;
       }"
     >
       <el-option
@@ -15,7 +15,28 @@
         :value="floor.value"
       ></el-option>
     </el-select>
-    <el-select v-model="selectedEquipment" placeholder="選擇設備名稱" class="custom-select">
+
+    <el-select
+      v-model="selectedField"
+      placeholder="選擇場域"
+      class="custom-select"
+      @change="() => {
+      selectedEquipment = undefined;
+      }"
+    >
+      <el-option
+        v-for="field in fields"
+        :key="field.value"
+        :label="field.label"
+        :value="field.value"
+      ></el-option>
+    </el-select>
+    <el-select
+      v-model="selectedEquipment"
+      placeholder="選擇設備名稱"
+      class="custom-select"
+      @change="HandleEquipmentSelected"
+    >
       <el-option
         v-for="equipment in equipments"
         :key="equipment.value"
@@ -30,19 +51,37 @@ export default {
   data() {
     return {
       selectedFloor: null,
+      selectedField: null,
       selectedEquipment: null,
       floors: [
-        { value: '3', label: '3F' },
-        { value: '4', label: '4F' }
+        { value: 3, label: '3F' },
+        { value: 4, label: '4F' }
+        // 添加更多樓層
+      ],
+      fields: [
+        { value: 'AOI', label: 'AOI(AOI)' },
+        { value: 'SE', label: '美格SE(MEC)' },
+        { value: 'YEL', label: '黃光(YEL)' },
         // 添加更多樓層
       ],
       equipments: [
-        { value: 'A', label: '設備A' },
-        { value: 'B', label: '設備B' }
+        { value: 'AGV_001', label: 'AGV_001' },
+        { value: 'AGV_002', label: 'AGV_002' }
         // 添加更多設備
       ]
     }
+  },
+  methods: {
+    HandleEquipmentSelected() {
+      this.$router.push(`/equipments?floor=${this.selectedFloor}&field=${this.selectedField}&equipment=${this.selectedEquipment}`)
+      this.$emit('OnEquipmentSelected', { floor: this.selectedFloor, field: this.selectedField, equipmentName: this.selectedEquipment });
+    }
+  },
+  mounted() {
+    console.log(this.$route);
+
   }
+
 }
 </script>
 <style scoped lang="scss">

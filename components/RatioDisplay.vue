@@ -1,17 +1,26 @@
 <template>
   <div class="ratio-display text-light">
-    <div class="ratio-display-title w-100">
+    <div v-if="!noTitle" class="ratio-display-title w-100">
       <slot name="title">Title</slot>
     </div>
     <div class="w-100 text-center">
-      <el-progress type="circle" stroke-width="15" :percentage="50" />
+      <el-progress :width="width" type="circle" stroke-width="15" :percentage="50" />
     </div>
   </div>
 </template>
 
 <script>
 export default {
-
+  props: {
+    noTitle: {
+      type: Boolean,
+      default: false
+    },
+    width: {
+      type: String,
+      default: '170'
+    }
+  },
 }
 </script>
 

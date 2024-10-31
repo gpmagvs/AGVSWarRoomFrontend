@@ -1,22 +1,34 @@
 <template>
   <div class="equipments">
-    <EquipmentSelector />equipments
+    <EquipmentSelector />
+    {{ test }}
+    <AGVStatus></AGVStatus>
   </div>
 </template>
 <script>
 
+import AGVStatus from '../components/EquipmentStatus/AGVStatus.vue';
+
 export default {
+  components: {
+    AGVStatus,
+  },
   name: 'IndexPage',
   data() {
     return {
-      isCollapse: true
+      isCollapse: true,
+      test: 0
     }
   },
   computed: {
-
+    realTimeEquipmentStatus() {
+      return this.$store.state.signalr.realTimeEquipmentStatus;
+    }
   },
   mounted() {
-
+    setInterval(() => {
+      this.test++;
+    }, 1000);
   },
   computed: {
     currentRouteName() {

@@ -1,5 +1,5 @@
 <template>
-  <div class="home"></div>
+  <div class="home">{{ test }}</div>
 </template>
 <script>
 
@@ -7,14 +7,17 @@ export default {
   name: 'IndexPage',
   data() {
     return {
-      isCollapse: true
+      isCollapse: true,
+      test: 0
     }
   },
   computed: {
 
   },
   mounted() {
-
+    setInterval(() => {
+      this.test++;
+    }, 1000);
   },
   computed: {
     currentRouteName() {

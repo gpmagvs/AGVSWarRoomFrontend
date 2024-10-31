@@ -1,8 +1,8 @@
 <template>
   <div class="h-100">
-    <Header @toggleSidebar="toggleSidebar" />
+    <Header v-if="!loading" @toggleSidebar="toggleSidebar" />
     <div class="d-flex h-100">
-      <SideMenu v-show="!isCollapse" :isCollapse="isCollapse" />
+      <SideMenu v-if="!loading" v-show="!isCollapse" :isCollapse="isCollapse" />
       <div
         v-if="loading"
         class="main-content-body p-2"
@@ -10,8 +10,11 @@
         element-loading-background="rgba(0, 0, 0, 0.8)"
         style="width: 100vw; height: calc(100vh - 60px)"
       ></div>
-      <div v-else class="flex-fill">
-        <nuxt />
+      <div v-else class="flex-fill p-2">
+        {{ $route.name }}
+        <keep-alive>
+          <nuxt />
+        </keep-alive>
       </div>
     </div>
   </div>
@@ -41,14 +44,24 @@ export default {
     this.$watch(
       () => this.$route,
       (newRoute, oldRoute) => {
-        console.log('Route changed:', newRoute);
-        this.loading = true;
+        this.$store.dispatch('signalr/stopConnection');
         setTimeout(() => {
-          this.loading = false;
+          if (newRoute.name === 'equipments') {
+            console.log('Route changed:', newRoute);
+            const floor = newRoute.query.floor;
+            const field = newRoute.query.field;
+            const equipment = newRoute.query.equipment;
+            console.log('newRoute query', floor, field, equipment);
+            this.$store.dispatch('signalr/startEquipmentsStateConnection', { floor: floor, field: field, equipment: equipment });
+          }
         }, 200);
       },
       { deep: true, immediate: true }
     );
+
+    setTimeout(() => {
+      this.loading = false;
+    }, 200);
   }
 }
 </script>

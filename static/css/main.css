@@ -8,3 +8,12 @@ html,body{
   --card-bg-color: rgb(0 55 77);
   --card-header-color: rgb(255, 255, 255);
 }
+
+.el-form-item__label{
+  color :rgb(211, 211, 211);
+  font-weight: bold;
+}
+
+.el-form-item__content{
+  font-size: large;
+}

@@ -28,7 +28,6 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: '@/plugins/element-ui', ssr: false },
-    '@/plugins/signalR',
     '@/plugins/moment.js',
     '@/plugins/bootstrap-vue',
     '@/plugins/axios',
@@ -75,7 +74,7 @@ export default {
     },
   },
   generate: {
-    dir: '../AGVPowerManagnmentBackend/AGVPowerManagnmentBackend/wwwroot'  // 將 'my-custom-dir' 替換為你想要的輸出目錄名稱
+    dir: './dist'  // 將 'my-custom-dir' 替換為你想要的輸出目錄名稱
   },
   router: {
     extendRoutes(routes, resolve) {
