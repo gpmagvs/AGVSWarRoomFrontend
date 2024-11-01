@@ -1,4 +1,9 @@
+
+import path from 'path';
 export default {
+  alias: {
+    '@': path.resolve(__dirname)
+  },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'AGV戰情室',

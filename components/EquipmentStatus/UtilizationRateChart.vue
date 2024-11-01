@@ -25,6 +25,10 @@ export default {
     this.initChart();
   },
   props: {
+    data: {
+      type: Object,
+      default: () => { }
+    },
     runStatusColor: {
       type: String,
       default: 'lime'
@@ -42,11 +46,10 @@ export default {
       default: 'blue'
     }
   },
-  methods: {
-    initChart() {
-      const chart = echarts.init(this.$refs.chart);
-
-      const option = {
+  data() {
+    return {
+      chart: null,
+      option: {
         backgroundColor: 'rgb(24, 24, 24)',
         grid: {
           left: '3%',
@@ -63,8 +66,6 @@ export default {
         xAxis: {
           type: 'time',
           boundaryGap: false,
-          min: new Date('2023-10-01 00:00').getTime(), // 設置 X 軸最小值
-          max: new Date('2023-10-01 23:59').getTime(), // 設置 X 軸最大值
           axisLabel: {
             formatter: function (value) {
               return new Date(value).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -113,18 +114,44 @@ export default {
               y: 2
             },
             data: [
-              [new Date('2023-10-01 09:00').getTime(), new Date('2023-10-01 09:10').getTime(), 0, 'orange'],
-              [new Date('2023-10-01 09:10').getTime(), new Date('2023-10-01 09:20').getTime(), 0, 'red'],
-              [new Date('2023-10-01 09:30').getTime(), new Date('2023-10-01 11:20').getTime(), 0, 'lime'],
-              [new Date('2023-10-01 13:10').getTime(), new Date('2023-10-01 20:00').getTime(), 0, 'blue'],
-              [new Date('2023-10-01 22:10').getTime(), new Date('2023-10-01 23:50').getTime(), 0, 'red'],
+              // [new Date('2023-10-01 09:00').getTime(), new Date('2023-10-01 09:10').getTime(), 0, 'orange'],
+              // [new Date('2023-10-01 09:10').getTime(), new Date('2023-10-01 09:20').getTime(), 0, 'red'],
             ]
           }
-        ]
-      };
+        ],
+        // dataZoom: [
+        //   {
+        //     type: 'slider', // 這是滑動條模式
+        //     start: 0,      // 默認顯示的起始位置
+        //     end: 100       // 默認顯示的結束位置
+        //   },
+        //   {
+        //     type: 'inside' // 這是內部縮放模式，支持鼠標滾輪縮放
+        //   }
+        // ]
+      }
+    }
+  },
+  methods: {
+    initChart() {
+      this.chart = echarts.init(this.$refs.chart);
+      this.chart.setOption(this.option);
+      window.addEventListener('resize', () => this.chart.resize());
+    }
+  },
+  watch: {
+    data: {
+      handler(newVal, oldVal) {
 
-      chart.setOption(option);
-      window.addEventListener('resize', () => chart.resize());
+        // 如果新舊數據相同就不更新
+
+        this.option.series[0].data = newVal.data;
+        this.option.xAxis.min = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
+        // this.option.xAxis.max = newVal.data[newVal.data.length - 1][1];
+        // 重新繪製圖表(不是用 initChart 是因為 initChart 會重新初始化圖表)
+        this.chart.setOption(this.option);
+      },
+      deep: true,
     }
   }
 };

@@ -1,7 +1,15 @@
+@font-face {
+  font-family: 'DigitalFont';
+  src: url('../fonts/DS-DIGIT.TTF');
+}
 html,body{
   background-color: rgb(26, 26, 26);
   color:white;
   overflow-y: hidden;
+}
+
+.digital-font{
+  font-family: 'DigitalFont';
 }
 
 :root {

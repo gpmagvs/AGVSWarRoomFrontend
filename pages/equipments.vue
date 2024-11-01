@@ -1,8 +1,7 @@
 <template>
   <div class="equipments">
-    <EquipmentSelector />
-    {{ test }}
-    <AGVStatus></AGVStatus>
+    <EquipmentSelector @equipment-selected="handleEquipmentSelected" />
+    <AGVStatus v-if="selectedEquipment.eqType == 0"></AGVStatus>
   </div>
 </template>
 <script>
@@ -16,8 +15,15 @@ export default {
   name: 'IndexPage',
   data() {
     return {
+      loading: false,
       isCollapse: true,
-      test: 0
+      test: 0,
+      selectedEquipment: {
+        floor: 0,
+        field: '',
+        eqName: '',
+        eqType: 0
+      }
     }
   },
   computed: {
@@ -42,8 +48,14 @@ export default {
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
     },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath);
+    handleEquipmentSelected(equipment) {
+      console.info('handleEquipmentSelected', equipment);
+      this.selectedEquipment = equipment;
+      this.loading = true;
+      setTimeout(() => {
+        this.loading = false;
+      }, 400);
+
     }
   },
 }

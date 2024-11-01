@@ -4,7 +4,7 @@
       <slot name="title">Title</slot>
     </div>
     <div class="w-100 text-center">
-      <el-progress :width="width" type="circle" stroke-width="15" :percentage="50" />
+      <el-progress :width="width" type="circle" :stroke-width="15" :percentage="value" />
     </div>
   </div>
 </template>
@@ -17,8 +17,12 @@ export default {
       default: false
     },
     width: {
-      type: String,
-      default: '170'
+      type: Number,
+      default: 170
+    },
+    value: {
+      type: Number,
+      default: 0
     }
   },
 }

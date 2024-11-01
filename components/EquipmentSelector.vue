@@ -1,12 +1,10 @@
 <template>
   <div class="equipment-selector d-flex">
     <el-select
-      v-model="selectedFloor"
+      v-model="selectedState.floor"
       placeholder="選擇樓層"
       class="mr-3 custom-select"
-      @change="() => {
-        selectedField= selectedEquipment = undefined;
-      }"
+      @change="StoreFloorSelect"
     >
       <el-option
         v-for="floor in floors"
@@ -17,12 +15,10 @@
     </el-select>
 
     <el-select
-      v-model="selectedField"
+      v-model="selectedState.field"
       placeholder="選擇場域"
       class="custom-select"
-      @change="() => {
-      selectedEquipment = undefined;
-      }"
+      @change="StoreFieldSelect"
     >
       <el-option
         v-for="field in fields"
@@ -32,7 +28,7 @@
       ></el-option>
     </el-select>
     <el-select
-      v-model="selectedEquipment"
+      v-model="selectedState.eqName"
       placeholder="選擇設備名稱"
       class="custom-select"
       @change="HandleEquipmentSelected"
@@ -50,36 +46,94 @@
 export default {
   data() {
     return {
-      selectedFloor: null,
-      selectedField: null,
-      selectedEquipment: null,
-      floors: [
-        { value: 3, label: '3F' },
-        { value: 4, label: '4F' }
-        // 添加更多樓層
-      ],
-      fields: [
-        { value: 'AOI', label: 'AOI(AOI)' },
-        { value: 'SE', label: '美格SE(MEC)' },
-        { value: 'YEL', label: '黃光(YEL)' },
-        // 添加更多樓層
-      ],
-      equipments: [
-        { value: 'AGV_001', label: 'AGV_001' },
-        { value: 'AGV_002', label: 'AGV_002' }
-        // 添加更多設備
-      ]
+      selectedState: {
+        floor: 0,
+        field: '',
+        eqName: '',
+        eqType: 0
+      }
+    }
+  },
+  computed: {
+    floors() {
+      try {
+        return this.$store.getters['ui/FloorOptions'];
+      } catch (error) {
+        console.error(error);
+        return [];
+      }
+    },
+    fields() {
+      return this.$store.getters['ui/FieldOptions'](this.selectedState.floor);
+    },
+    equipments() {
+      return this.$store.getters['ui/EquipmentOptions'](this.selectedState.floor, this.selectedState.field);
+    },
+    selectedEqType() {
+      return this.equipments.find(equipment => equipment.value == this.selectedState.eqName)?.eqType;
     }
   },
   methods: {
-    HandleEquipmentSelected() {
-      this.$router.push(`/equipments?floor=${this.selectedFloor}&field=${this.selectedField}&equipment=${this.selectedEquipment}`)
-      this.$emit('OnEquipmentSelected', { floor: this.selectedFloor, field: this.selectedField, equipmentName: this.selectedEquipment });
+    StoreFloorSelect(floor) {
+      this.selectedState.field = this.selectedState.eqName = undefined;
+      console.info(floor)
+      this.$store.commit('ui/UpdateEqSelectState', this.selectedState)
+      this.SaveEqSelectStateToLocalStorage(this.selectedState)
+    },
+    StoreFieldSelect(field) {
+      this.selectedState.eqName = undefined;
+      this.$store.commit('ui/UpdateEqSelectState', this.selectedState)
+      this.SaveEqSelectStateToLocalStorage(this.selectedState)
+    },
+    StoreEqNameSelect(eqName) {
+      this.$store.commit('ui/UpdateEqSelectState', this.selectedState)
+    },
+    HandleEquipmentSelected(eqName) {
+
+      this.selectedState.eqType = this.selectedEqType;
+      this.$store.commit('ui/UpdateEqSelectState', this.selectedState)
+      this.StopSignalrConnectionAndConnect()
+      this.SaveEqSelectStateToLocalStorage(this.selectedState)
+      this.EmitEquipmentSelected()
+    },
+    EmitEquipmentSelected() {
+      this.$emit('equipment-selected', {
+        floor: this.selectedState.floor,
+        field: this.selectedState.field,
+        eqName: this.selectedState.eqName,
+        eqType: this.selectedEqType
+      });
+    },
+    StopSignalrConnectionAndConnect() {
+      this.$store.dispatch('signalr/stopConnection');
+      setTimeout(() => {
+        this.$store.dispatch('signalr/startEquipmentsStateConnection', this.selectedState);
+      }, 200);
+    },
+    SaveEqSelectStateToLocalStorage(state) {
+      localStorage.setItem('EqSelectState', JSON.stringify(state));
+    },
+    GetEqSelectStateFromLocalStorage() {
+      return JSON.parse(localStorage.getItem('EqSelectState'));
     }
+
   },
   mounted() {
-    console.log(this.$route);
-
+    // var _floorOptions = this.$store.getters['ui/FloorOptions'];
+    // console.info(_floorOptions);
+    const selectState = this.GetEqSelectStateFromLocalStorage();
+    if (selectState) {
+      Object.assign(this.selectedState, selectState);
+      this.$store.commit('ui/UpdateEqSelectState', this.selectedState)
+    } else {
+      selectState = this.$store.getters['ui/EqSelectState'];
+      Object.assign(this.selectedState, selectState);
+    }
+    console.info(this.selectedState)
+    this.StopSignalrConnectionAndConnect()
+    setTimeout(() => {
+      this.EmitEquipmentSelected();
+    }, 200);
   }
 
 }

@@ -11,7 +11,6 @@
         style="width: 100vw; height: calc(100vh - 60px)"
       ></div>
       <div v-else class="flex-fill p-2">
-        {{ $route.name }}
         <keep-alive>
           <nuxt />
         </keep-alive>
@@ -23,7 +22,7 @@
 <script>
 import Header from '~/components/Header.vue';
 import SideMenu from '~/components/SideMenu.vue';
-
+import { watch } from 'vue';
 export default {
   components: {
     Header,
@@ -41,24 +40,14 @@ export default {
     }
   },
   mounted() {
+    this.$store.dispatch('ui/downloadFieldsInfo')
     this.$watch(
       () => this.$route,
       (newRoute, oldRoute) => {
-        this.$store.dispatch('signalr/stopConnection');
-        setTimeout(() => {
-          if (newRoute.name === 'equipments') {
-            console.log('Route changed:', newRoute);
-            const floor = newRoute.query.floor;
-            const field = newRoute.query.field;
-            const equipment = newRoute.query.equipment;
-            console.log('newRoute query', floor, field, equipment);
-            this.$store.dispatch('signalr/startEquipmentsStateConnection', { floor: floor, field: field, equipment: equipment });
-          }
-        }, 200);
+        // this.$store.dispatch('signalr/stopConnection');
       },
       { deep: true, immediate: true }
     );
-
     setTimeout(() => {
       this.loading = false;
     }, 200);

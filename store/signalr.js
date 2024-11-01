@@ -21,11 +21,11 @@ export const mutations = {
 
 export const actions = {
   async startEquipmentsStateConnection({ commit }, query) {
-    console.log('startEquipmentsStateConnection', query.floor, query.field, query.equipment);
-    const hubUrl = `http://localhost:5190/EquipmentStatus?floor=${query.floor}&field=${query.field}&equipmentName=${query.equipment}`;
+    // console.log('startEquipmentsStateConnection', query.floor, query.field, query.eqName);
+    const hubUrl = `http://localhost:5190/EquipmentStatus?floor=${query.floor}&field=${query.field}&equipmentName=${query.eqName}&eqType=${query.eqType}`;
     SignalRService.startConnection(hubUrl);
     SignalRService.addListener('EquipmentStatusData', (message) => {
-      console.log('EquipmentStatusData', message);
+      // console.log('EquipmentStatusData', message);
       commit('SET_REAL_TIME_EQUIPMENT_STATUS', message);
     });
 
