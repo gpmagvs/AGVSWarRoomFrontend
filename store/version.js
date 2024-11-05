@@ -1,4 +1,3 @@
-import { FetchVersions } from '@/services/backend'
 import { AGVSFieldVersionInfo } from '@/utils/models/Version'
 export const state = () => ({
   versions: [new AGVSFieldVersionInfo()],
@@ -32,7 +31,7 @@ export const mutations = {
 export const actions = {
   async fetchVersions({ commit }) {
     try {
-      const response = await FetchVersions();
+      const response = await this.$backendService.FetchVersions();
       console.log('response', response)
       commit('SET_VERSIONS', response)
     } catch (error) {

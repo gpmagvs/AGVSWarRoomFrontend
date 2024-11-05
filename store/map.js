@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { clsMap } from '@/utils/models/map';
 export const state = () => ({
   mapData: {
@@ -27,7 +26,7 @@ export const actions = {
 }
 
 async function FetchMapData() {
-  const res = await axios.get('http://localhost:7026/map');
+  const res = await this.$axios.get('http://localhost:7026/map');
   let _map = new clsMap()
   Object.assign(_map, res.data['Map']);
   return _map;

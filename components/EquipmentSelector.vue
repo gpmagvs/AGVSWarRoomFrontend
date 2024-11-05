@@ -82,7 +82,6 @@ export default {
     },
     StoreFieldSelect(field) {
       this.selectedState.eqName = undefined;
-      this.$store.commit('ui/UpdateEqSelectState', this.selectedState)
       this.SaveEqSelectStateToLocalStorage(this.selectedState)
     },
     StoreEqNameSelect(eqName) {
@@ -91,7 +90,6 @@ export default {
     HandleEquipmentSelected(eqName) {
 
       this.selectedState.eqType = this.selectedEqType;
-      this.$store.commit('ui/UpdateEqSelectState', this.selectedState)
       this.StopSignalrConnectionAndConnect()
       this.SaveEqSelectStateToLocalStorage(this.selectedState)
       this.EmitEquipmentSelected()
@@ -124,12 +122,7 @@ export default {
     const selectState = this.GetEqSelectStateFromLocalStorage();
     if (selectState) {
       Object.assign(this.selectedState, selectState);
-      this.$store.commit('ui/UpdateEqSelectState', this.selectedState)
-    } else {
-      selectState = this.$store.getters['ui/EqSelectState'];
-      Object.assign(this.selectedState, selectState);
     }
-    console.info(this.selectedState)
     this.StopSignalrConnectionAndConnect()
     setTimeout(() => {
       this.EmitEquipmentSelected();

@@ -30,12 +30,12 @@ export default {
   ],
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '~/plugins/axios',
+    '~/plugins/backend-service',
     { src: '@/plugins/element-ui', ssr: false },
     '@/plugins/moment.js',
     '@/plugins/bootstrap-vue',
-    '@/plugins/axios',
     '@/plugins/router.js',
-
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -45,16 +45,15 @@ export default {
   buildModules: [
   ],
   axios: {
-    proxy: process.env.NODE_ENV === 'development' // Use proxy only in development mode
+    proxy: process.env.NODE_ENV === 'development',
+    credentials: true,
+    debug: process.env.NODE_ENV === 'development'
   },
   proxy: process.env.NODE_ENV === 'development' ? {
     '/api': {
       target: 'http://127.0.0.1:5254',
-      // pathRewrite: {
-      //   "^/": "",
-      // },
-      // secure: false,
-      // changeOrigin: true,
+      pathRewrite: { '^/api': '' },
+      changeOrigin: true
     }
   } : {},
   // Modules: https://go.nuxtjs.dev/config-modules

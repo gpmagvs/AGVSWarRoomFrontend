@@ -11,7 +11,7 @@
         style="width: 100vw; height: calc(100vh - 60px)"
       ></div>
       <main v-else class="flex-fill p-2">
-        <Nuxt keep-alive :keep-alive-props="{ exclude: ['modal'] }" />
+        <Nuxt keep-alive :keep-alive-props="{exclude:['modal'] }" />
       </main>
     </div>
   </div>

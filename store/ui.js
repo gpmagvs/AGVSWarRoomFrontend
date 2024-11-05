@@ -1,4 +1,3 @@
-import { DownloadFieldsInfo } from '@/services/backend'
 export const state = () => ({
   fieldsInfo: [{
     floor: 3,
@@ -64,7 +63,12 @@ export const mutations = {
 }
 export const actions = {
   async downloadFieldsInfo({ state, commit }) {
-    const res = await DownloadFieldsInfo();
-    commit('setFieldsInfo', res);
+    try {
+      const res = await this.$backendService.DownloadFieldsInfo()
+      commit('setFieldsInfo', res)
+    } catch (error) {
+      console.error('Error downloading fields info:', error)
+      throw error
+    }
   }
 }
