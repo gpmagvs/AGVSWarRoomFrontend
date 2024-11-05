@@ -5,13 +5,13 @@
       <CardContainer>
         <template #header>系統運轉狀態</template>
         <template>
-          <SystemRunModeStatus />
+          <SystemRunModeStatus class="p-2" />
         </template>
       </CardContainer>
       <CardContainer>
         <template #header>系統警報</template>
         <template #default>
-          <SystemAlarmGroup />
+          <SystemAlarmGroup class="p-2" />
         </template>
       </CardContainer>
       <CardContainer class="flex-fill">
@@ -22,12 +22,20 @@
       </CardContainer>
     </div>
     <div class="flex-fill">
-      <CardContainer>
-        <template #header>任務統計</template>
-        <template #default>
-          <SystemAlarmGroup />
-        </template>
-      </CardContainer>
+      <div class="d-flex flex-column h-100">
+        <CardContainer>
+          <template #header>任務列表</template>
+          <template #default>
+            <TasksList class="px-2" />
+          </template>
+        </CardContainer>
+        <CardContainer class="flex-fill">
+          <template #header>Bird View</template>
+          <template #default>
+            <BirdView class="h-100" :show-vehicle="true" :show-grid="true" />
+          </template>
+        </CardContainer>
+      </div>
     </div>
   </div>
 </template>
@@ -36,11 +44,15 @@
 import SystemRunModeStatus from './SystemRunModeStatus.vue';
 import SystemAlarmGroup from './SystemAlarmGroup.vue';
 import EquipmentStatus from './EquipmentStatus.vue';
+import TasksList from './TasksList.vue';
+import BirdView from './BirdView.vue';
 export default {
   components: {
     SystemRunModeStatus,
     SystemAlarmGroup,
-    EquipmentStatus
+    EquipmentStatus,
+    TasksList,
+    BirdView
   },
   props: {
     floor: {

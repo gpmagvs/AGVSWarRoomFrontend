@@ -47,6 +47,7 @@ export default {
     toggleSidebar() {
       this.isCollapse = !this.isCollapse;
       this.$emit('toggleSidebar');
+      this.$store.commit('SET_COLLAPSE', this.isCollapse)
     }
   }
 }
@@ -67,7 +68,7 @@ export default {
     }
     .nav-breadcrumb-container {
       padding-left: 20px;
-      width: 180px;
+      width: 220px;
       padding-top: 7px;
     }
   }

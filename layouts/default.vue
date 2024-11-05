@@ -10,11 +10,9 @@
         element-loading-background="rgba(0, 0, 0, 0.8)"
         style="width: 100vw; height: calc(100vh - 60px)"
       ></div>
-      <div v-else class="flex-fill p-2">
-        <keep-alive>
-          <nuxt />
-        </keep-alive>
-      </div>
+      <main v-else class="flex-fill p-2">
+        <Nuxt keep-alive :keep-alive-props="{ exclude: ['modal'] }" />
+      </main>
     </div>
   </div>
 </template>
@@ -24,6 +22,7 @@ import Header from '~/components/Header.vue';
 import SideMenu from '~/components/SideMenu.vue';
 import { watch } from 'vue';
 export default {
+  name: 'DefaultLayout',
   components: {
     Header,
     SideMenu

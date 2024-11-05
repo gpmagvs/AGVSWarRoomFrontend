@@ -26,7 +26,6 @@ export const getters = {
     return floors;
   },
   FieldOptions: (state) => (floor) => {
-    console.info('FieldOptions', floor);
     try {
       return state.fieldsInfo.filter(field => field.floor === floor).map(field => {
         return { value: field.name, label: field.name }
@@ -37,11 +36,8 @@ export const getters = {
     }
   },
   EquipmentOptions: (state) => (floor, fieldName) => {
-    console.info('EquipmentOptions', floor, fieldName);
     try {
-      console.info(state.fieldsInfo);
       const field = state.fieldsInfo.find(field => field.floor == floor && field.name == fieldName);
-      console.info('field', field);
       if (field) {
         return field.equipments.map(equipment => {
           return { value: equipment.name, label: equipment.name, eqType: equipment.eqType }
@@ -64,12 +60,10 @@ export const mutations = {
   },
   setFieldsInfo(state, fieldsInfo) {
     state.fieldsInfo = fieldsInfo;
-    console.info('setFieldsInfo', state.fieldsInfo);
   }
 }
 export const actions = {
   async downloadFieldsInfo({ state, commit }) {
-    console.log('downloadFieldsInfo');
     const res = await DownloadFieldsInfo();
     commit('setFieldsInfo', res);
   }

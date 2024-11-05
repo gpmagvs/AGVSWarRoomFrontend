@@ -16,6 +16,10 @@ export async function DownloadFieldsInfo() {
   return res.data;
 }
 
+export async function FetchVersions() {
+  const res = await _axios.get('/api/Version');
+  return res.data;
+}
 
 export default _axios;
 

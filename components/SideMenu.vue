@@ -10,7 +10,8 @@
       @close="handleClose"
       :collapse="isCollapse"
       unique-opened
-      style="border: none;height: 100vh; overflow-y: auto;"
+      :collapse-transition="false"
+      style="border: none;height: 100vh; width:200px; overflow-y: auto;"
     >
       <el-menu-item index="0" @click="navigateTo('/')">
         <i class="el-icon-location"></i>
@@ -68,12 +69,19 @@
           </el-menu-item-group>
         </el-submenu>
       </el-submenu>
-
+      <el-menu-item index="4" @click="navigateTo('/transfer')">
+        <i class="el-icon-location"></i>
+        <span>搬運狀態統計</span>
+      </el-menu-item>
       <el-menu-item index="1" @click="navigateTo('/equipments')">
         <i class="el-icon-location"></i>
         <span>設備狀態</span>
       </el-menu-item>
-      <el-menu-item index="2" @click="navigateTo('/test')">
+      <el-menu-item index="2" @click="navigateTo('/versions')">
+        <i class="el-icon-location"></i>
+        <span>版本管理</span>
+      </el-menu-item>
+      <el-menu-item index="3" @click="navigateTo('/test')">
         <i class="el-icon-menu"></i>
         <span>Login</span>
       </el-menu-item>
@@ -92,10 +100,8 @@ export default {
   },
   methods: {
     handleOpen(key, keyPath) {
-      console.log(key, keyPath);
     },
     handleClose(key, keyPath) {
-      console.log(key, keyPath);
     },
     navigateTo(path) {
       this.$router.push(path);

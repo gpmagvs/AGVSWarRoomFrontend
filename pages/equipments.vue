@@ -1,16 +1,20 @@
 <template>
   <div class="equipments">
     <EquipmentSelector @equipment-selected="handleEquipmentSelected" />
+    <!-- {{ selectedEquipment.eqType }} -->
     <AGVStatus v-if="selectedEquipment.eqType == 0"></AGVStatus>
+    <MainEqStatus v-if="selectedEquipment.eqType == 3"></MainEqStatus>
   </div>
 </template>
 <script>
 
 import AGVStatus from '../components/EquipmentStatus/AGVStatus.vue';
+import MainEqStatus from '../components/EquipmentStatus/MainEqStatus.vue';
 
 export default {
   components: {
     AGVStatus,
+    MainEqStatus
   },
   name: 'IndexPage',
   data() {

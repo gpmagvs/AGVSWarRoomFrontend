@@ -3,7 +3,8 @@ export const state = () => ({
   SignalRUrl: 'http://127.0.0.1:5254/RealTimeDataHub',
   fields: [{ name: '', url: '' }],
   fieldsOverViewStatus: {},
-  counter: 0
+  counter: 0,
+  isCollapse: true
 })
 
 export const getters = {
@@ -36,6 +37,9 @@ export const mutations = {
   },
   currentSignalRUrl(state, url) {
     state.SignalRUrl = url;
+  },
+  SET_COLLAPSE(state, collapse) {
+    state.isCollapse = collapse;
   }
 }
 

@@ -4,7 +4,7 @@
 <script>
 
 export default {
-  name: 'IndexPage',
+  name: 'HomePage',
   data() {
     return {
       isCollapse: true,

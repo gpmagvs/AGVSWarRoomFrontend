@@ -1,4 +1,3 @@
-
 import path from 'path';
 export default {
   alias: {
@@ -18,7 +17,6 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: 'https://unpkg.com/leaflet/dist/leaflet.css' }
     ],
   },
 
@@ -36,7 +34,8 @@ export default {
     '@/plugins/moment.js',
     '@/plugins/bootstrap-vue',
     '@/plugins/axios',
-    '@/plugins/router.js'
+    '@/plugins/router.js',
+
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -64,7 +63,8 @@ export default {
     '@nuxt/ui',
     '@nuxtjs/axios',
     '@nuxtjs/proxy',
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    'nuxt-leaflet'
   ],
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
@@ -76,7 +76,7 @@ export default {
       scss: {
         implementation: require('sass'),
       },
-    },
+    }
   },
   generate: {
     dir: './dist'  // 將 'my-custom-dir' 替換為你想要的輸出目錄名稱
@@ -92,8 +92,12 @@ export default {
           route.meta = { alias: '場域' }
         } else if (route.name === 'equipments') {
           route.meta = { alias: '設備狀態' }
+        } else if (route.name === 'versions') {
+          route.meta = { alias: '版本管理' }
         } else if (route.name === '/test') {
           route.meta = { alias: '測試頁面' }
+        } else if (route.name === 'transfer') {
+          route.meta = { alias: '搬運狀態統計' }
         }
         // Add more routes as needed
       })

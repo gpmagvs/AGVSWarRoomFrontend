@@ -5,7 +5,7 @@
         <slot name="header">Header</slot>
       </div>
     </template>
-    <div class="w-100 h-100 bg-dark py-3 rounded">
+    <div class="w-100 h-100 bg-dark pt-2">
       <slot>Default card body</slot>
     </div>
   </el-card>
@@ -20,10 +20,10 @@ export default {
 <style lang="scss" scoped>
 .my-card {
   border: 1px solid #656565;
-  border-radius: 4px;
+  border-radius: 2px;
   margin: 5px;
   ::v-deep .el-card__header {
-    border-bottom: 1px solid #2c2c2c;
+    border-bottom: 3px solid #2c2c2c;
     background-color: var(--card-bg-color);
     font-weight: bold;
     letter-spacing: 5px;
@@ -38,6 +38,8 @@ export default {
 
   .card-header {
     color: var(--card-header-color);
+    font-size: 16px;
+    height: 30px;
   }
 }
 </style>
